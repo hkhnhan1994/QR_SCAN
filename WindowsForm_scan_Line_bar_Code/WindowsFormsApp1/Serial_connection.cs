@@ -22,30 +22,55 @@ namespace LineBarScanner
 
         private void Serial_connection_Load(object sender, EventArgs e)
         {
-            cb_baud.Text = "9600";
-            cb_SerialPort.DataSource = SerialPort.GetPortNames();
-
+            cb_baud_scanner.Text = "9600";
+            cb_baud_printer.Text = "9600";
+            cb_Ser_scanner.DataSource = SerialPort.GetPortNames();
+            cb_Ser_printer.DataSource = SerialPort.GetPortNames();
         }
 
         private void b_connect_Click(object sender, EventArgs e)
         {
-            Scanner.instance.serialport.PortName = cb_SerialPort.Text;
-            Scanner.instance.serialport.BaudRate = Convert.ToInt32( cb_baud.Text);
-            Scanner.instance.serialport.Open();
-            if (Scanner.instance.serialport.IsOpen )
+            try
             {
-                connection_status.Text = "Connected";
+                Scanner.instance.serialport_scanner.PortName = cb_Ser_scanner.Text;
+                Scanner.instance.serialport_scanner.BaudRate = Convert.ToInt32(cb_baud_scanner.Text);
+                Scanner.instance.serialport_scanner.Open();
+                if (Scanner.instance.serialport_scanner.IsOpen)
+                {
+                    connection_status_scanner.Text = "Connected";
 
-                
+
+                }
+                else
+                    connection_status_scanner.Text = "Disconnected";
             }
-            else
-                connection_status.Text = "Disconnected";
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);            }
+            
         }
 
         private void Serial_connection_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Scanner.instance.st_baud.Text = cb_baud.Text;
-            Scanner.instance.st_com.Text = cb_SerialPort.Text;
+            Scanner.instance.st_baud_scanner.Text = cb_baud_scanner.Text;
+            Scanner.instance.st_com_scanner.Text = cb_Ser_scanner.Text;
+            Scanner.instance.st_baud_printer.Text = cb_baud_printer.Text;
+            Scanner.instance.st_com_printer.Text = cb_Ser_printer.Text;
+        }
+
+        private void b_connect_printer_Click(object sender, EventArgs e)
+        {
+            Scanner.instance.serialport_printer.PortName = cb_Ser_scanner.Text;
+            Scanner.instance.serialport_printer.BaudRate = Convert.ToInt32(cb_baud_scanner.Text);
+            Scanner.instance.serialport_printer.Open();
+            if (Scanner.instance.serialport_printer.IsOpen)
+            {
+                connection_status_printer.Text = "Connected";
+
+
+            }
+            else
+                connection_status_printer.Text = "Disconnected";
         }
     }
 }

@@ -16,21 +16,26 @@ namespace LineBarScanner
     public partial class Scanner : Form
     {
         public static Scanner instance;
-        public Label st_com;
-        public Label st_baud;
-        public SerialPort serialport;
+        public Label st_com_scanner;
+        public Label st_baud_scanner;
+        public Label st_com_printer;
+        public Label st_baud_printer;
+        public SerialPort serialport_scanner;
+        public SerialPort serialport_printer;
         string database_path = database_helper.connectionString;
         string serial_data;
         string total_code;
         public static int total_box =0;
-        DateTime today = DateTime.Today;
         public Scanner()
         {
             InitializeComponent();
             instance = this;
-            st_com = lb_Serial_status_COM;
-            st_baud = lb_Serial_status_Baud;
-            serialport = SerialCOM;
+            st_com_scanner = lb_Serial_scanner_status_COM;
+            st_baud_scanner = lb_Serial_scanner_status_Baud;
+            st_com_printer = lb_Serial_printer_status_COM;
+            st_baud_printer = lb_Serial_printer_status_Baud;
+            serialport_scanner = Ser_Com_scanner;
+            serialport_printer = Ser_Com_printer;
         }
   
 
@@ -43,22 +48,22 @@ namespace LineBarScanner
         {
             get
             {
-                return this.lb_Serial_status_COM.Text;
+                return this.lb_Serial_scanner_status_COM.Text;
             }
             set
             {
-                this.lb_Serial_status_COM.Text = value;
+                this.lb_Serial_scanner_status_COM.Text = value;
             }
         }
         public string Serial_label_Baud
         {
             get
             {
-                return this.lb_Serial_status_Baud.Text;
+                return this.lb_Serial_scanner_status_Baud.Text;
             }
             set
             {
-                this.lb_Serial_status_Baud.Text = value;
+                this.lb_Serial_scanner_status_Baud.Text = value;
             }
         }
         private void datashow()
@@ -80,44 +85,65 @@ namespace LineBarScanner
         private void SerialCOM_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             
-            serial_data = serialport.ReadExisting();
+            serial_data = serialport_scanner.ReadExisting();
             this.Invoke(new EventHandler(processingsteps));
             
         }
 
         private void processingsteps(object sender, EventArgs e)
         {
-            string _prefix = tb_box_id.Text;
-            tb_Serial_content.Text = serial_data;
+            string _prefix = "";
+            string _new_box_name = "";
+            lb_Serial_scanner_content.Text = serial_data;
             lb_code_counter.Text = total_code;
             if (cb_prefix.Checked)
             {
-                if (!cb_auto.Checked)
+                if (cb_auto.Checked)
                     _prefix = serial_data.Split(tb_prefix.Text.FirstOrDefault())[0];
-                else
-                {
-                    _prefix = serial_data.Split(tb_prefix.Text.FirstOrDefault())[0];
-                    tb_prefix.Text = _prefix;
-                }
+                else  _prefix = tb_box_id.Text;
             }
-
-                if (tb_box_id.Text != total_box.ToString("8X") + _prefix)
-                    tb_box_id.Text = total_box.ToString("8X") + _prefix;
-                string formattedDateTime = today.ToString("dddd, dd MMMM yyyy HH:mm:ss");
-                total_code = database_helper.insertcode(tb_box_id.Text, serial_data, formattedDateTime);
-                string[] row = new string[] { tb_box_id.Text, serial_data, formattedDateTime };
+            DateTime today = DateTime.UtcNow;
+            _new_box_name = _prefix + total_box.ToString("X4");
+            string formattedDateTime = today.ToString("dd MMMM yyyy HH:mm:ss");
+            if (database_helper.insertcode(_new_box_name, serial_data))
+            {
+                lb_store_status.Text = "stored!";
+                string[] row = new string[] { _new_box_name, serial_data, formattedDateTime };
                 dataGridView1.ColumnCount = 3;
                 dataGridView1.Columns[0].Name = "BoxID";
                 dataGridView1.Columns[1].Name = "Code";
                 dataGridView1.Columns[2].Name = "Timestamp";
+                dataGridView1.Rows.Add(row);
+            }
+            else
+            {
+                lb_store_status.Text = "failed to add a new code!";
+            }
+            lb_code_counter.Text = database_helper.count_code(_new_box_name);
                 lb_cur_box.Text = Convert.ToString(total_box);
-                if (total_box > Convert.ToInt32(tb_number_product.Text))
+                if (Convert.ToInt32(lb_code_counter.Text) > Convert.ToInt32(tb_set_number_code.Text)-1)
                 {
-                    this.dataGridView1.DataSource = null;
-                    this.dataGridView1.Rows.Clear();
-                    //print QRcode
-                }
+                    total_box += 1;
+                    lb_cur_box.Text = total_box.ToString();
+                //print QRcode
+                string qr_code_string = "";
+                if (cb_qr_date.Checked)
+                    qr_code_string = _new_box_name + "-" + tb_set_number_code.Text + today.ToFileTimeUtc().ToString();
+                else qr_code_string = _new_box_name + "-" + tb_set_number_code.Text;
+                lb_Serial_printer_content.Text = qr_code_string;
+                QRCoder.QRCodeGenerator qrcode = new QRCoder.QRCodeGenerator();
+                var qr1 = qrcode.CreateQrCode(qr_code_string, QRCoder.QRCodeGenerator.ECCLevel.H);
+                var code = new QRCoder.QRCode(qr1);
+                pb_qr.Image = code.GetGraphic(10);
+                if (serialport_printer.IsOpen) serialport_printer.WriteLine(qr_code_string);
+            }
 
+        }
+
+        private void testScannerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            testcamera tc = new testcamera();
+            tc.ShowDialog();
         }
     }
 }

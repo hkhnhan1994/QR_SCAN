@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
 using System.Collections;
+using System.Windows.Forms;
+using LineBarScanner;
+using System.Data;
+using System.IO.Ports;
 
 public static class database_helper
 {
@@ -32,62 +36,95 @@ public static class database_helper
                 {
                     command.CommandText = createCodetable;
                     command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
         }
         else { Console.WriteLine("database founded"); }
     }
-    public static string insertcode(string box_id,string linecode, string date)
+    public static bool insertcode(string box_id,string linecode, string date="")
     {
         using(var connection = new SQLiteConnection(connectionString))
         {
-            
-            try
+            connection.Open();
+            string insert_query = "INSERT INTO CodeBox(BoxID,Code,Timestamp) VALUES(@box_id,@linecode,DATETIME('now'))";
+            using (var command_insert = new SQLiteCommand(insert_query,connection))
             {
-                var Query = new SQLiteCommand(connection);
-                SQLiteDataReader _read_record_total;
-                Query.CommandText = "INSERT INTO CodeBox(BoxID,Code,Timestamp) VALUES(@box_id,@linecode,@Date)";
-                Query.Parameters.AddWithValue("@box_id", box_id);
-                Query.Parameters.AddWithValue("@linecode", linecode);
-                Query.Parameters.AddWithValue("@Date", date);
-                Query.ExecuteNonQuery();
-                // check number of code has been inserted
-                Query.CommandText = "SELECT SUM(Code) FROM CodeBox WHERE BoxID=@box_id";
-                Query.Parameters.AddWithValue("@box_id", box_id);
-                _read_record_total = Query.ExecuteReader();
-                return _read_record_total.GetString(0);
+                try
+                {
+                    command_insert.Parameters.AddWithValue("@box_id", box_id);
+                    command_insert.Parameters.AddWithValue("@linecode", linecode);
+                    command_insert.ExecuteNonQuery ();
+                    connection.Close();
+                    return true;
+                }
+                catch
+                {
+                    Console.WriteLine("can not insert this record");
+                    //connection.Close();
+                    return false;
+                }
             }
-            catch {
-                Console.WriteLine("can not insert this record");
-                return null;
-            }
+  
+
         }
     }
-    public static List<Tuple<string, string>> get_code(string box_id)
+    public static string count_code(string box_id)
     {
         using (var connection = new SQLiteConnection(connectionString))
         {
-            var Query = new SQLiteCommand(connection);
-            Query.CommandText = "SELECT * FROM CodeBox WHERE BoxID=@box_id";
-            Query.Parameters.AddWithValue("@box_id", box_id);
-            SQLiteDataReader _read_record_get_code = Query.ExecuteReader();
-            var code_list = new List<string>();
-            while (_read_record_get_code.Read())
+            connection.Open();
+            string sum_query = "SELECT COUNT(*) as cout FROM CodeBox WHERE BoxID ='"+ box_id+"'";
+            using (var command_sum = new SQLiteCommand(sum_query, connection))
             {
-                code_list.Add(_read_record_get_code.GetString(2));
-            }
-            string combinedCode = string.Join(",", code_list.ToArray());
+                try
+                {
+                    int result =0;
+                    SQLiteDataReader _r = command_sum.ExecuteReader();
+                    //_read_record_total = command_sum.ExecuteReader();
+                    //connection.Close();
+                    while(_r.Read())
+                    {
+                        int _result = Convert.ToInt32(_r["cout"]);
+                        if (_result> result) result = _result;
+                    }
+                    connection.Close();
+                    return Convert.ToString(result);
 
-            Query.CommandText = "SELECT SUM(Code) FROM CodeBox WHERE BoxID=@box_id";
-            Query.Parameters.AddWithValue("@box_id", box_id);
-            SQLiteDataReader _read_record_total = Query.ExecuteReader();
-            // Create a new dictionary of strings, with string keys.
-            //
-            List<Tuple<string, string>> Result = new List<Tuple<string, string>>();
-            Result.Add(new Tuple<string, string>("Code", combinedCode));
-            Result.Add(new Tuple<string, string>("BoxID", box_id));
-            Result.Add(new Tuple<string, string>("Total", _read_record_total.GetString(0)));
-            return Result;
+
+                }
+                catch
+                {
+                    Console.WriteLine("can not sum this boxID");
+                    connection.Close();
+                    return "0";
+                }
+            }
+
+        }
+    }
+    public static void get_code(string box_id, string split_rule)
+    {
+        using (var connection = new SQLiteConnection(connectionString))
+        {
+            string _box_id= box_id.Split(split_rule.FirstOrDefault())[0];
+            connection.Open();
+            string sum_query = "SELECT BoxID,Code,Timestamp FROM CodeBox WHERE BoxID ='" + _box_id + "'";
+            using (var command_sum = new SQLiteCommand(sum_query, connection))
+            {
+                using(SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command_sum))
+                {
+                    DataTable dataTable = new DataTable();
+                    // Fill the DataTable with the result set from the query
+                    dataAdapter.Fill(dataTable);
+
+                    // Close the connection
+                    connection.Close();
+
+                    // Display the DataTable in a DataGridView
+                    testcamera.instance.show_code_grid.DataSource = dataTable;
+                }
+            }
 
         }
     }

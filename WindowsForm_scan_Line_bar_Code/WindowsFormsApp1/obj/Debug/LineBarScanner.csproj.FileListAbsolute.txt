@@ -90,3 +90,16 @@ C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp
 C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\System.Text.Json.xml
 C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\System.ValueTuple.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\Zen.Barcode.Core.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\QRCoder.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.Video.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\zxing.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\zxing.presentation.dll
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.Video.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\AForge.Video.DirectShow.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\zxing.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\zxing.presentation.xml
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\LineBarScanner.testcamera.resources
