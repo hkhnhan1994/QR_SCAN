@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace LineBarScanner
 {
     partial class Serial_connection
     {

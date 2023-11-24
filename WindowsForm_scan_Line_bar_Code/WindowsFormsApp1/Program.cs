@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace LineBarScanner
 {
     internal static class Program
     {
@@ -16,7 +16,9 @@ namespace WindowsFormsApp1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            database_helper.inital_database();
             Application.Run(new Scanner());
+           
         }
     }
 }

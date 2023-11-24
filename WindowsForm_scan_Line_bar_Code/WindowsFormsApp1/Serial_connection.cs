@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
 using System.IO.Ports;
-namespace WindowsFormsApp1
+namespace LineBarScanner
 {
     public partial class Serial_connection : Form
     {
@@ -29,10 +29,10 @@ namespace WindowsFormsApp1
 
         private void b_connect_Click(object sender, EventArgs e)
         {
-            SerialCOM.PortName = cb_SerialPort.Text;
-            SerialCOM.BaudRate = Convert.ToInt32( cb_baud.Text);
-            SerialCOM.Open();
-            if (SerialCOM.IsOpen )
+            Scanner.instance.serialport.PortName = cb_SerialPort.Text;
+            Scanner.instance.serialport.BaudRate = Convert.ToInt32( cb_baud.Text);
+            Scanner.instance.serialport.Open();
+            if (Scanner.instance.serialport.IsOpen )
             {
                 connection_status.Text = "Connected";
 
