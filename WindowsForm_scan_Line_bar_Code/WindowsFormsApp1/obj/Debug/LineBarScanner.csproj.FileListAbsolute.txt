@@ -1,0 +1,11 @@
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\LineBarScanner.csproj.AssemblyReference.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\LineBarScanner.csproj.GenerateResource.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\LineBarScanner.csproj.CoreCompileInputs.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Scanner.resources
+C:\Users\Tien Van\Desktop\QR_SCAN\WindowsForm_scan_Line_bar_Code\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Serial_connection.resources
