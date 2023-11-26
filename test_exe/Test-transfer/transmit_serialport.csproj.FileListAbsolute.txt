@@ -1,0 +1,10 @@
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\bin\Debug\transmit_serialport.exe.config
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\bin\Debug\transmit_serialport.exe
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\bin\Debug\transmit_serialport.pdb
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.csproj.AssemblyReference.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.Form1.resources
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.Properties.Resources.resources
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.csproj.GenerateResource.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.csproj.CoreCompileInputs.cache
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.exe
+C:\Users\Tien Van\Desktop\QR_SCAN\transmit_serialport\transmit_serialport\obj\Debug\transmit_serialport.pdb

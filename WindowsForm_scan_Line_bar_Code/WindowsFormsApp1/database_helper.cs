@@ -13,13 +13,13 @@ using System.IO.Ports;
 
 public static class database_helper
 {
-    public static string connectionString = @"Data Source=..\..\database\data.db;Version =3;";
+    public static string connectionString = @"Data Source=..\database\data.db;Version =3;";
     public static void inital_database()
     {
-        if (!File.Exists(@"database\data.db"))
+        if (!File.Exists(@"..\database\data.db"))
         {
-            Console.WriteLine(@"..\..\database has not found");
-            SQLiteConnection.CreateFile(@"..\..\database\data.db");
+            Console.WriteLine(@"database has not found");
+            SQLiteConnection.CreateFile(@"..\database\data.db");
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
@@ -28,8 +28,7 @@ public static class database_helper
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     BoxID TEXT NOT NULL,
                     Code TEXT NOT NULL,
-                    Timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                    UNIQUE(BoxID, Code)
+                    Timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
                     )
                     ";
                 using (var command = new SQLiteCommand(connection)) 
@@ -64,11 +63,16 @@ public static class database_helper
                     //connection.Close();
                     return false;
                 }
+                finally
+                {
+                    connection.Close();
+                }
             }
   
 
         }
     }
+    
     public static string count_code(string box_id)
     {
         using (var connection = new SQLiteConnection(connectionString))
@@ -103,29 +107,104 @@ public static class database_helper
 
         }
     }
-    public static void get_code(string box_id, string split_rule)
+    public static string get_latest_code()
+    {
+        using (var connection = new SQLiteConnection(connectionString))
+        {
+            connection.Open();
+            string sum_query = "SELECT BoxID FROM CodeBox ORDER BY Timestamp desc LIMIT 1";
+            using (var command_sum = new SQLiteCommand(sum_query, connection))
+            {
+                try
+                {
+                    string result="";
+                    SQLiteDataReader _r = command_sum.ExecuteReader();
+                    //_read_record_total = command_sum.ExecuteReader();
+                    //connection.Close();
+                    while (_r.Read())
+                    {
+                        string _result = _r["BoxID"].ToString();
+                        if (_result != result) result = _result;
+                    }
+                    connection.Close();
+                    return result;
+
+
+                }
+                catch
+                {
+                    Console.WriteLine("can not sum this boxID");
+                    connection.Close();
+                    return "";
+                }
+            }
+
+        }
+    }
+    public static DataTable get_code(string box_id, string split_rule)
     {
         using (var connection = new SQLiteConnection(connectionString))
         {
             string _box_id= box_id.Split(split_rule.FirstOrDefault())[0];
+            string sum_query;
             connection.Open();
-            string sum_query = "SELECT BoxID,Code,Timestamp FROM CodeBox WHERE BoxID ='" + _box_id + "'";
+            if (box_id=="")
+            sum_query = "SELECT BoxID,Code,STRFTIME('%d/%m/%Y, %H:%M', Timestamp) as Timestamp FROM CodeBox";
+            else
+            sum_query = "SELECT BoxID,Code,STRFTIME('%d/%m/%Y, %H:%M', Timestamp) as Timestamp FROM CodeBox WHERE BoxID ='" + _box_id + "'";
             using (var command_sum = new SQLiteCommand(sum_query, connection))
             {
                 using(SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command_sum))
                 {
-                    DataTable dataTable = new DataTable();
-                    // Fill the DataTable with the result set from the query
-                    dataAdapter.Fill(dataTable);
+                    try
+                    {
+                        DataTable dataTable = new DataTable();
+                        // Fill the DataTable with the result set from the query
+                        dataAdapter.Fill(dataTable);
+                        // Close the connection
+                        connection.Close();
 
-                    // Close the connection
-                    connection.Close();
-
-                    // Display the DataTable in a DataGridView
-                    testcamera.instance.show_code_grid.DataSource = dataTable;
+                        return dataTable;
+                        // Display the DataTable in a DataGridView
+                        //targetgrid.DataSource = dataTable;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("database is empty");
+                        return null;
+                        
+                    }
+                    
                 }
             }
 
+        }
+    }
+    public static bool cleardatabase()
+    {
+        using (var connection = new SQLiteConnection(connectionString))
+        {
+            connection.Open();
+            string insert_query = "DELETE FROM CodeBox WHERE 1=1";
+            using (var command_insert = new SQLiteCommand(insert_query, connection))
+            {
+                try
+                {
+                    command_insert.ExecuteNonQuery();
+                    connection.Close();
+                    return true;
+                }
+                catch
+                {
+                    Console.WriteLine("can not clear table");
+                    //connection.Close();
+                    return false;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Scanner));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.setupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,7 @@
             this.tb_prefix = new System.Windows.Forms.TextBox();
             this.Ser_Com_scanner = new System.IO.Ports.SerialPort(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tb_set_number_code = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -62,6 +64,8 @@
             this.lb_Serial_printer_content = new System.Windows.Forms.Label();
             this.lb_Serial_printer_status_Baud = new System.Windows.Forms.Label();
             this.lb_Serial_printer_status_COM = new System.Windows.Forms.Label();
+            this.bt_clearcode = new System.Windows.Forms.Button();
+            this.t_received_transform = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -78,7 +82,7 @@
             this.testScannerToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(805, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(903, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -94,7 +98,7 @@
             // 
             this.serialToolStripMenuItem.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.serialToolStripMenuItem.Name = "serialToolStripMenuItem";
-            this.serialToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.serialToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.serialToolStripMenuItem.Text = "Serial";
             this.serialToolStripMenuItem.Click += new System.EventHandler(this.serialToolStripMenuItem_Click);
             // 
@@ -112,7 +116,7 @@
             this.groupBox1.Controls.Add(this.lb_Serial_scanner_status_COM);
             this.groupBox1.Location = new System.Drawing.Point(12, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(152, 110);
+            this.groupBox1.Size = new System.Drawing.Size(254, 96);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Serial input(scanner)";
@@ -120,7 +124,7 @@
             // lb_Serial_scanner_content
             // 
             this.lb_Serial_scanner_content.AutoSize = true;
-            this.lb_Serial_scanner_content.Location = new System.Drawing.Point(20, 83);
+            this.lb_Serial_scanner_content.Location = new System.Drawing.Point(20, 74);
             this.lb_Serial_scanner_content.Name = "lb_Serial_scanner_content";
             this.lb_Serial_scanner_content.Size = new System.Drawing.Size(10, 13);
             this.lb_Serial_scanner_content.TabIndex = 2;
@@ -147,9 +151,9 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(170, 27);
+            this.dataGridView1.Location = new System.Drawing.Point(272, 32);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(372, 209);
+            this.dataGridView1.Size = new System.Drawing.Size(372, 341);
             this.dataGridView1.TabIndex = 2;
             // 
             // groupBox2
@@ -161,7 +165,7 @@
             this.groupBox2.Controls.Add(this.tb_box_id);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(560, 27);
+            this.groupBox2.Location = new System.Drawing.Point(650, 27);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(245, 230);
             this.groupBox2.TabIndex = 2;
@@ -258,12 +262,14 @@
             this.cb_qr_date.TabIndex = 3;
             this.cb_qr_date.Text = "Date time include";
             this.cb_qr_date.UseVisualStyleBackColor = true;
+            this.cb_qr_date.CheckedChanged += new System.EventHandler(this.cb_qr_date_CheckedChanged);
             // 
             // tb_prefix
             // 
-            this.tb_prefix.Location = new System.Drawing.Point(138, 54);
+            this.tb_prefix.Location = new System.Drawing.Point(176, 54);
+            this.tb_prefix.MaxLength = 1;
             this.tb_prefix.Name = "tb_prefix";
-            this.tb_prefix.Size = new System.Drawing.Size(57, 20);
+            this.tb_prefix.Size = new System.Drawing.Size(19, 20);
             this.tb_prefix.TabIndex = 2;
             this.tb_prefix.Text = "-";
             // 
@@ -273,18 +279,28 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.tb_set_number_code);
             this.groupBox3.Controls.Add(this.cb_qr_date);
             this.groupBox3.Controls.Add(this.tb_prefix);
             this.groupBox3.Controls.Add(this.cb_prefix);
             this.groupBox3.Controls.Add(this.cb_auto);
-            this.groupBox3.Location = new System.Drawing.Point(560, 263);
+            this.groupBox3.Location = new System.Drawing.Point(650, 263);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(245, 113);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Setting QRCode";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(123, 58);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Split rule";
             // 
             // label6
             // 
@@ -306,7 +322,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(455, 244);
+            this.label5.Location = new System.Drawing.Point(173, 324);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(72, 13);
             this.label5.TabIndex = 13;
@@ -315,7 +331,7 @@
             // lb_code_counter
             // 
             this.lb_code_counter.AutoSize = true;
-            this.lb_code_counter.Location = new System.Drawing.Point(530, 244);
+            this.lb_code_counter.Location = new System.Drawing.Point(248, 324);
             this.lb_code_counter.Name = "lb_code_counter";
             this.lb_code_counter.Size = new System.Drawing.Size(13, 13);
             this.lb_code_counter.TabIndex = 14;
@@ -324,7 +340,7 @@
             // lb_store_status
             // 
             this.lb_store_status.AutoSize = true;
-            this.lb_store_status.Location = new System.Drawing.Point(167, 244);
+            this.lb_store_status.Location = new System.Drawing.Point(173, 305);
             this.lb_store_status.Name = "lb_store_status";
             this.lb_store_status.Size = new System.Drawing.Size(10, 13);
             this.lb_store_status.TabIndex = 15;
@@ -335,9 +351,9 @@
             this.groupBox4.Controls.Add(this.lb_Serial_printer_content);
             this.groupBox4.Controls.Add(this.lb_Serial_printer_status_Baud);
             this.groupBox4.Controls.Add(this.lb_Serial_printer_status_COM);
-            this.groupBox4.Location = new System.Drawing.Point(12, 147);
+            this.groupBox4.Location = new System.Drawing.Point(12, 129);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(152, 110);
+            this.groupBox4.Size = new System.Drawing.Size(254, 112);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Serial output(printer)";
@@ -345,7 +361,7 @@
             // lb_Serial_printer_content
             // 
             this.lb_Serial_printer_content.AutoSize = true;
-            this.lb_Serial_printer_content.Location = new System.Drawing.Point(20, 83);
+            this.lb_Serial_printer_content.Location = new System.Drawing.Point(20, 81);
             this.lb_Serial_printer_content.Name = "lb_Serial_printer_content";
             this.lb_Serial_printer_content.Size = new System.Drawing.Size(10, 13);
             this.lb_Serial_printer_content.TabIndex = 2;
@@ -369,11 +385,28 @@
             this.lb_Serial_printer_status_COM.TabIndex = 0;
             this.lb_Serial_printer_status_COM.Text = "-";
             // 
+            // bt_clearcode
+            // 
+            this.bt_clearcode.Location = new System.Drawing.Point(170, 350);
+            this.bt_clearcode.Name = "bt_clearcode";
+            this.bt_clearcode.Size = new System.Drawing.Size(75, 23);
+            this.bt_clearcode.TabIndex = 16;
+            this.bt_clearcode.Text = "Clear";
+            this.bt_clearcode.UseVisualStyleBackColor = true;
+            this.bt_clearcode.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // t_received_transform
+            // 
+            this.t_received_transform.Interval = 50;
+            this.t_received_transform.Tick += new System.EventHandler(this.t_received_transform_Tick);
+            // 
             // Scanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 388);
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ClientSize = new System.Drawing.Size(903, 388);
+            this.Controls.Add(this.bt_clearcode);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.lb_store_status);
             this.Controls.Add(this.lb_code_counter);
@@ -383,6 +416,9 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Scanner";
             this.Text = "Scanner";
             this.menuStrip1.ResumeLayout(false);
@@ -431,12 +467,15 @@
         private System.Windows.Forms.Label lb_store_status;
         private System.Windows.Forms.PictureBox pb_qr;
         private System.IO.Ports.SerialPort Ser_Com_printer;
-        private System.Windows.Forms.Label lb_Serial_scanner_content;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label lb_Serial_printer_content;
         private System.Windows.Forms.Label lb_Serial_printer_status_Baud;
         private System.Windows.Forms.Label lb_Serial_printer_status_COM;
         private System.Windows.Forms.ToolStripMenuItem testScannerToolStripMenuItem;
+        private System.Windows.Forms.Label lb_Serial_scanner_content;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button bt_clearcode;
+        private System.Windows.Forms.Timer t_received_transform;
     }
 }
 
