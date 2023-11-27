@@ -151,7 +151,7 @@ public static class database_helper
             if (box_id=="")
             sum_query = "SELECT BoxID,Code,STRFTIME('%d/%m/%Y, %H:%M', Timestamp) as Timestamp FROM CodeBox";
             else
-            sum_query = "SELECT BoxID,Code,STRFTIME('%d/%m/%Y, %H:%M', Timestamp) as Timestamp FROM CodeBox WHERE BoxID ='" + _box_id + "'";
+            sum_query = "SELECT ROW_NUMBER() OVER(PARTITION BY Code ORDER BY Timestamp DESC) Number, BoxID,Code,STRFTIME('%d/%m/%Y, %H:%M', Timestamp) as Timestamp FROM CodeBox WHERE BoxID ='" + _box_id + "'";
             using (var command_sum = new SQLiteCommand(sum_query, connection))
             {
                 using(SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(command_sum))

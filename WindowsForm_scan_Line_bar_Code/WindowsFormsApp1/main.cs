@@ -39,13 +39,8 @@ namespace LineBarScanner
             st_baud_printer = lb_Serial_printer_status_Baud;
             serialport_scanner = Ser_Com_scanner;
             serialport_printer = Ser_Com_printer;
-            dataGridView1.DataSource=database_helper.get_code("", "");
-            int nRowIndex = dataGridView1.Rows.Count - 1;
-            int nColumnIndex = 2;
-
-            dataGridView1.Rows[nRowIndex].Selected = true;
-            dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            DataTable dt = database_helper.get_code("", "");
+            show_gridview(dt);
             string latest_box_id = database_helper.get_latest_code();
             string get_number_box_id;
             if (latest_box_id != "")
@@ -89,11 +84,21 @@ namespace LineBarScanner
             pb_qr.Image = code.GetGraphic(10);
             return qr_code_string;
         }
+        private void show_gridview(DataTable dt)
+        {
+            dataGridView1.DataSource = dt;
+            int nRowIndex = dataGridView1.Rows.Count - 1;
+            int nColumnIndex = 2;
+
+            dataGridView1.Rows[nRowIndex].Selected = true;
+            dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
+            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
         private void processingsteps(object sender, EventArgs e)
         {
             string _prefix = "";
             DateTime today = DateTime.UtcNow;
-            string formattedDateTime = today.ToString("dd MMMM yyyy HH:mm:ss");
+            string formattedDateTime = today.ToString("dd/MM/yyyy, H:mm");
 
             lb_Serial_scanner_content.Text = rececived_data;
             lb_code_counter.Text = total_code;
@@ -163,13 +168,8 @@ namespace LineBarScanner
                 
                 dataGridView1.DataSource =null;
                 dataGridView1.Refresh();
-                dataGridView1.DataSource=database_helper.get_code("", "");
-                int nRowIndex = dataGridView1.Rows.Count - 1;
-                int nColumnIndex = 2;
-
-                dataGridView1.Rows[nRowIndex].Selected = true;
-                dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-                dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                DataTable dt = database_helper.get_code("", "");
+                show_gridview(dt);
                 total_box = 0;
                 lb_cur_box.Text = total_box.ToString();
                 lb_code_counter.Text = "0";

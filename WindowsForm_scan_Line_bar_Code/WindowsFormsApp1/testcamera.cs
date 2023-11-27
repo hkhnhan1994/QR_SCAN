@@ -79,17 +79,25 @@ namespace LineBarScanner
             }
         }
 
+
+        private void show_gridview(DataTable dt)
+        {
+            dt.Columns.Remove("BoxID");
+            dt.Columns.Remove("Timestamp");
+            dataGridView1.DataSource = dt;
+            int nRowIndex = dataGridView1.Rows.Count - 1;
+            int nColumnIndex = 0;
+
+            dataGridView1.Rows[nRowIndex].Selected = true;
+            dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
+            dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
         private void NewMethod(Result result)
         {
             txtQRcode = result.ToString();
             tb_test_input_camera.Text = txtQRcode;
-            dataGridView1.DataSource = database_helper.get_code(tb_test_input_camera.Text, tb_split_code.Text);
-            int nRowIndex = dataGridView1.Rows.Count - 1;
-            int nColumnIndex = 2;
-
-            dataGridView1.Rows[nRowIndex].Selected = true;
-            dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-            dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            DataTable dataTable = database_helper.get_code(tb_test_input_camera.Text, tb_split_code.Text);
+            show_gridview(dataTable);
             // timer1.Stop();
             // if (captureDevice.IsRunning) captureDevice.Stop();
         }
@@ -98,15 +106,7 @@ namespace LineBarScanner
         {
             //testcamera.instance.show_code_grid.DataSource = dataTable;
             DataTable dataTable = database_helper.get_code(tb_test_input_camera.Text, tb_split_code.Text);
-            dataTable.Columns.Remove("BoxID");
-            dataTable.Columns.Remove("Timestamp");
-            dataGridView1.DataSource = dataTable;
-            int nRowIndex = dataGridView1.Rows.Count - 1;
-            int nColumnIndex = 0;
-
-            dataGridView1.Rows[nRowIndex].Selected = true;
-            dataGridView1.Rows[nRowIndex].Cells[nColumnIndex].Selected = true;
-            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            show_gridview(dataTable);
         }
 
         private void testcamera_FormClosed(object sender, FormClosedEventArgs e)
